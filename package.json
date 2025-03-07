@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "start:prod": "npm run build:react && electron .",
     "dev": "concurrently \"webpack --watch\" \"electron . --dev\"",
     "build:react": "webpack --mode production",
     "build": "npm run build:react && electron-builder",

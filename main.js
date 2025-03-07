@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog, Menu } = require("electron");
 const path = require("path");
 const fs = require("fs");
 const Store = require("electron-store");
@@ -35,6 +35,8 @@ function createWindow() {
     icon: path.join(__dirname, "assets", "icon.png"),
     show: false, // Don't show until ready-to-show
     backgroundColor: "#f5f5f5",
+    autoHideMenuBar: !process.argv.includes("--dev"), // Hide menu bar in production
+    frame: true, // Keep the frame for window controls
   });
 
   // Check if build directory exists
@@ -75,9 +77,45 @@ function createWindow() {
     mainWindow = null;
   });
 
-  // Open DevTools in development mode
+  // Open DevTools in development mode only
   if (process.argv.includes("--dev")) {
     mainWindow.webContents.openDevTools();
+    // Create a default menu for development mode
+    const defaultMenu = Menu.buildFromTemplate([
+      {
+        label: "File",
+        submenu: [{ role: "quit" }],
+      },
+      {
+        label: "Edit",
+        submenu: [
+          { role: "undo" },
+          { role: "redo" },
+          { type: "separator" },
+          { role: "cut" },
+          { role: "copy" },
+          { role: "paste" },
+        ],
+      },
+      {
+        label: "View",
+        submenu: [
+          { role: "reload" },
+          { role: "forceReload" },
+          { role: "toggleDevTools" },
+          { type: "separator" },
+          { role: "resetZoom" },
+          { role: "zoomIn" },
+          { role: "zoomOut" },
+          { type: "separator" },
+          { role: "togglefullscreen" },
+        ],
+      },
+    ]);
+    Menu.setApplicationMenu(defaultMenu);
+  } else {
+    // Hide the menu in production mode
+    Menu.setApplicationMenu(null);
   }
 }
 
