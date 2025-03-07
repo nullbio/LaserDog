@@ -8,7 +8,8 @@
     "start:prod": "npm run build:react && electron .",
     "dev": "concurrently \"webpack --watch\" \"electron . --dev\"",
     "build:react": "webpack --mode production",
-    "build": "npm run build:react && electron-builder",
+    "build": "npm run build:react && electron-builder --win",
+    "build:win": "npm run build:react && node build-win.js",
     "test": "jest"
   },
   "repository": {
@@ -58,16 +59,17 @@
       "node_modules/**/*"
     ],
     "directories": {
-      "buildResources": "assets"
-    },
-    "mac": {
-      "category": "public.app-category.productivity"
+      "buildResources": "assets",
+      "output": "dist"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/icon.ico"
     },
-    "linux": {
-      "target": "AppImage"
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
     }
   }
 }
