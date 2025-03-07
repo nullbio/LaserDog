@@ -1,0 +1,149 @@
+/* App container */
+.app {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+/* Sidebar positioning */
+.sidebar-left {
+  flex-direction: row;
+}
+
+.sidebar-right {
+  flex-direction: row-reverse;
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+  background-color: #fff;
+  position: relative;
+}
+
+/* Floating toolbar */
+.floating-toolbar {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  cursor: move;
+}
+
+.floating-toolbar input {
+  margin-bottom: 0;
+  margin-right: 0.5rem;
+}
+
+.floating-toolbar button {
+  margin-left: 0.5rem;
+}
+
+.floating-toolbar .settings-button {
+  margin-left: auto;
+}
+
+/* Settings panel */
+.settings-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+  padding: 2rem;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.settings-panel h2 {
+  margin-bottom: 1.5rem;
+}
+
+.settings-panel .close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  padding: 0;
+}
+
+/* Selection toolbar */
+.selection-toolbar {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.selection-toolbar button {
+  margin: 0 0.25rem;
+}
+
+/* Breakdown level slider */
+.breakdown-slider {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.breakdown-slider input {
+  margin: 0 0.5rem;
+  width: 100px;
+}
+
+/* Todo item editing */
+.todo-edit-input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+} 
