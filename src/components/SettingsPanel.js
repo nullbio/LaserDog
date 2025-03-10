@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "../contexts/AppContext";
-import "./SettingsPanel.css";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "./ui/dialog";
+import { Button } from "./ui/button";
+import { cn } from "../lib/utils";
 
 const SettingsPanel = () => {
   const {
+    isSettingsPanelOpen,
     setIsSettingsPanelOpen,
     sidebarPosition,
     setSidebarPosition,
@@ -45,71 +55,93 @@ const SettingsPanel = () => {
   };
 
   return (
-    <div className="settings-panel">
-      <button className="close-button" onClick={closePanel}>
-        ×
-      </button>
+    <Dialog open={isSettingsPanelOpen} onOpenChange={setIsSettingsPanelOpen}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-bold">Settings</DialogTitle>
+          <DialogDescription>
+            Configure your LaserDog application preferences.
+          </DialogDescription>
+        </DialogHeader>
 
-      <h2>Settings</h2>
+        <div className="py-4 space-y-6">
+          <div className="space-y-2">
+            <h3 className="font-medium text-sm">Interface</h3>
 
-      <div className="settings-section">
-        <h3>Interface</h3>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Sidebar Position</span>
+              <div className="flex items-center space-x-2">
+                <label
+                  className={cn(
+                    "flex items-center cursor-pointer space-x-1 px-3 py-1 rounded-md",
+                    localSidebarPosition === "left"
+                      ? "bg-primary/10 text-primary"
+                      : "hover:bg-muted"
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="sidebarPosition"
+                    value="left"
+                    checked={localSidebarPosition === "left"}
+                    onChange={() => setLocalSidebarPosition("left")}
+                    className="sr-only"
+                  />
+                  <span>Left</span>
+                </label>
 
-        <div className="setting-item">
-          <label>Sidebar Position</label>
-          <div className="setting-controls">
-            <label className="radio-label">
+                <label
+                  className={cn(
+                    "flex items-center cursor-pointer space-x-1 px-3 py-1 rounded-md",
+                    localSidebarPosition === "right"
+                      ? "bg-primary/10 text-primary"
+                      : "hover:bg-muted"
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="sidebarPosition"
+                    value="right"
+                    checked={localSidebarPosition === "right"}
+                    onChange={() => setLocalSidebarPosition("right")}
+                    className="sr-only"
+                  />
+                  <span>Right</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <h3 className="font-medium text-sm">AI Integration</h3>
+
+            <div className="space-y-1">
+              <label htmlFor="openai-key" className="text-sm">
+                OpenAI API Key
+              </label>
               <input
-                type="radio"
-                name="sidebarPosition"
-                value="left"
-                checked={localSidebarPosition === "left"}
-                onChange={() => setLocalSidebarPosition("left")}
+                id="openai-key"
+                type="password"
+                value={localApiKeys.openai || ""}
+                onChange={(e) => handleApiKeyChange("openai", e.target.value)}
+                placeholder="sk-..."
+                className="w-full px-3 py-2 border rounded-md text-sm"
               />
-              Left
-            </label>
-
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="sidebarPosition"
-                value="right"
-                checked={localSidebarPosition === "right"}
-                onChange={() => setLocalSidebarPosition("right")}
-              />
-              Right
-            </label>
+              <p className="text-xs text-muted-foreground">
+                Required for AI-powered todo breakdown functionality.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="settings-section">
-        <h3>AI Integration</h3>
-
-        <div className="setting-item">
-          <label>OpenAI API Key</label>
-          <input
-            type="password"
-            value={localApiKeys.openai || ""}
-            onChange={(e) => handleApiKeyChange("openai", e.target.value)}
-            placeholder="sk-..."
-          />
-          <p className="setting-description">
-            Required for AI-powered todo breakdown functionality.
-          </p>
-        </div>
-      </div>
-
-      <div className="settings-actions">
-        <button className="cancel-button" onClick={closePanel}>
-          Cancel
-        </button>
-
-        <button className="save-button" onClick={saveSettings}>
-          Save Changes
-        </button>
-      </div>
-    </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={closePanel}>
+            Cancel
+          </Button>
+          <Button onClick={saveSettings}>Save Changes</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

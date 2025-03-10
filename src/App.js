@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar";
 import MainContent from "./components/MainContent";
 import FloatingToolbar from "./components/FloatingToolbar";
 import SettingsPanel from "./components/SettingsPanel";
-import "./App.css";
+import { cn } from "./lib/utils";
 
 function App() {
   const {
@@ -39,20 +39,19 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div className="h-screen w-screen overflow-hidden bg-background text-foreground">
       <div
-        className={`app-container ${
-          sidebarPosition === "right" ? "sidebar-right" : "sidebar-left"
-        }`}
+        className={cn(
+          "flex h-full w-full",
+          sidebarPosition === "right" ? "flex-row-reverse" : "flex-row"
+        )}
       >
-        {sidebarPosition === "left" && <Sidebar />}
+        <Sidebar />
         <MainContent />
-        {sidebarPosition === "right" && <Sidebar />}
       </div>
 
       <FloatingToolbar />
-
-      {isSettingsPanelOpen && <SettingsPanel />}
+      <SettingsPanel />
     </div>
   );
 }

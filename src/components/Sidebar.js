@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useAppContext } from "../contexts/AppContext";
-import "./Sidebar.css";
+import { Button } from "./ui/button";
+import { Card, CardContent } from "./ui/card";
+import { cn } from "../lib/utils";
 
 const Sidebar = () => {
   const {
@@ -47,102 +49,177 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar">
-      <div className="sidebar-header">
-        <h2>LaserDog</h2>
-      </div>
+    <div className="w-64 h-full border-r bg-card flex flex-col">
+      <div className="p-4 border-b">
+        <h1 className="text-xl font-bold mb-4">LaserDog</h1>
 
-      <div className="sidebar-section">
-        <div className="section-header">
-          <h3>Projects</h3>
-          <button
-            className="add-button"
-            onClick={() => setIsAddingProject(!isAddingProject)}
-          >
-            {isAddingProject ? "×" : "+"}
-          </button>
-        </div>
-
-        {isAddingProject && (
-          <form onSubmit={handleCreateProject} className="add-form">
-            <input
-              type="text"
-              placeholder="Project name"
-              value={newProjectName}
-              onChange={(e) => setNewProjectName(e.target.value)}
-              autoFocus
-            />
-            <button type="submit">Add</button>
-          </form>
-        )}
-
-        <ul className="project-list">
-          {projects.map((project) => (
-            <li
-              key={project.id}
-              className={
-                currentProject && project.id === currentProject.id
-                  ? "active"
-                  : ""
-              }
-              onClick={() => switchProject(project.id)}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-medium">Projects</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-0"
+              onClick={() => setIsAddingProject(true)}
             >
-              {project.name}
-            </li>
-          ))}
-          {projects.length === 0 && (
-            <li className="empty-message">No projects yet</li>
-          )}
-        </ul>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              <span className="sr-only">Add Project</span>
+            </Button>
+          </div>
+
+          {isAddingProject ? (
+            <form
+              onSubmit={handleCreateProject}
+              className="flex items-center space-x-2"
+            >
+              <input
+                type="text"
+                value={newProjectName}
+                onChange={(e) => setNewProjectName(e.target.value)}
+                placeholder="Project name"
+                autoFocus
+                className="flex-1 px-2 py-1 text-sm border rounded-md"
+              />
+              <Button type="submit" size="sm" className="h-7">
+                Add
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-7"
+                onClick={() => setIsAddingProject(false)}
+              >
+                Cancel
+              </Button>
+            </form>
+          ) : null}
+
+          <div className="space-y-1">
+            {projects.map((project) => (
+              <div
+                key={project.id}
+                className={cn(
+                  "px-2 py-1.5 text-sm rounded-md cursor-pointer",
+                  currentProject && currentProject.id === project.id
+                    ? "bg-primary/10 text-primary font-medium"
+                    : "hover:bg-muted"
+                )}
+                onClick={() => switchProject(project.id)}
+              >
+                {project.name}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {currentProject && (
-        <div className="sidebar-section">
-          <div className="section-header">
-            <h3>Files</h3>
-            <button
-              className="add-button"
-              onClick={() => setIsAddingFile(!isAddingFile)}
+        <div className="p-4 flex-1 overflow-auto">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-sm font-medium">Files</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-0"
+              onClick={() => setIsAddingFile(true)}
             >
-              {isAddingFile ? "×" : "+"}
-            </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              <span className="sr-only">Add File</span>
+            </Button>
           </div>
 
-          {isAddingFile && (
-            <form onSubmit={handleCreateFile} className="add-form">
+          {isAddingFile ? (
+            <form
+              onSubmit={handleCreateFile}
+              className="flex items-center space-x-2 mb-2"
+            >
               <input
                 type="text"
-                placeholder="File name"
                 value={newFileName}
                 onChange={(e) => setNewFileName(e.target.value)}
+                placeholder="File name"
                 autoFocus
+                className="flex-1 px-2 py-1 text-sm border rounded-md"
               />
-              <button type="submit">Add</button>
-            </form>
-          )}
-
-          <ul className="file-list">
-            {currentProject.files.map((file) => (
-              <li
-                key={file.id}
-                className={
-                  file.id === currentProject.currentFile?.id ? "active" : ""
-                }
-                onClick={() => switchFile(file.id)}
+              <Button type="submit" size="sm" className="h-7">
+                Add
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-7"
+                onClick={() => setIsAddingFile(false)}
               >
-                {file.name}
-                <button
-                  className="delete-button"
+                Cancel
+              </Button>
+            </form>
+          ) : null}
+
+          <div className="space-y-1">
+            {currentProject.files.map((file) => (
+              <div
+                key={file.id}
+                className={cn(
+                  "group px-2 py-1.5 text-sm rounded-md cursor-pointer flex items-center justify-between",
+                  currentProject.currentFileId === file.id
+                    ? "bg-primary/10 text-primary font-medium"
+                    : "hover:bg-muted"
+                )}
+                onClick={() => switchFile(currentProject.id, file.id)}
+              >
+                <span className="truncate">{file.name}</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-5 w-5 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive"
                   onClick={(e) => handleDeleteFile(file.id, e)}
                 >
-                  ×
-                </button>
-              </li>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M3 6h18" />
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                  </svg>
+                  <span className="sr-only">Delete</span>
+                </Button>
+              </div>
             ))}
-            {currentProject.files.length === 0 && (
-              <li className="empty-message">No files yet</li>
-            )}
-          </ul>
+          </div>
         </div>
       )}
     </div>
