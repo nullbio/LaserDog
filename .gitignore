@@ -1,3 +1,6 @@
+# Custom files
+.envrc
+
 # Dependencies
 /node_modules
 

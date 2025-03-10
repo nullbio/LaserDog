@@ -1,0 +1,13 @@
+{
+  "appId": "com.laserdog.app",
+  "productName": "LaserDog",
+  "files": ["build/**/*", "main.js", "preload.js", "node_modules/**/*"],
+  "directories": {
+    "buildResources": "assets",
+    "output": "dist"
+  },
+  "win": {
+    "target": "portable",
+    "artifactName": "LaserDog-Setup.exe"
+  }
+}
